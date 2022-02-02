@@ -5,6 +5,7 @@ import telethon as bbot
 
 @register(pattern=("/dance"))
 async def awake(event): 
-  TEXT = f
+    TEXT = "**♡ OwO let's do party** \n\n"
+    TEXT += f"**♡ Are your in ** \n\n"
 
 
