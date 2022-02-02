@@ -45,7 +45,6 @@ pygithub
 TgCrypto
 Pyrogram
 PyDictionary
-git+https://github.com/Sorrybabe/downloader
 asyncio
 cloudscraper
 dateparser
@@ -68,7 +67,6 @@ python-arq
 envparse
 better_profanity
 textblob 
-nekos.py
 motor
 gpytranslate
 fontTools
