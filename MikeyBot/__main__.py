@@ -31,6 +31,7 @@ from MikeyBot import (
     WEBHOOK,
     CERT_PATH,
     SUPPORT_CHAT,
+    EVENT_LOGS,
     PORT,
     URL,
     LOGGER,
