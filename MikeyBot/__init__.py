@@ -84,7 +84,8 @@ else:
     except ValueError:
         raise Exception("[MikeyBot] Your OWNER_ID variable is not a valid integer.")
 
-    MESSAGE_DUMP = Config.MESSAGE_DUMP
+    ERROR_LOGS = Config.ERROR_LOGS
+    EVENT_LOGS = Config.EVENT_LOGS
     OWNER_USERNAME = Config.OWNER_USERNAME
 
     try:
