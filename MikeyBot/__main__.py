@@ -73,28 +73,20 @@ def get_readable_time(seconds: int) -> str:
     return ping_time
 
 PM_START_TEXT="""
-────「 [{}]() 」────
+────「 [{}](https://telegra.ph/file/7cdc6f03a90f014be9b5f.jpg) 」────
 
 Heyyo `{}`, Mikey here!!
-
 *I am an Anime themed advance group management bot with a lot of awesome Features*
-
 ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
-
 • *Uptime:* `{}`
-
 ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
-
 • `{}` *users, across* `{}` *chats.*
-
-
-
 """
 
 buttons = [
     [
         InlineKeyboardButton(
-            text="➕️ ᴀᴅᴅ ʏᴏɴᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ ➕️", url="t.me/Yone_Robot?startgroup=true"),
+            text="ᴀᴅᴅ ᴍɪᴋᴇʏ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ", url="t.me/Yone_Robot?startgroup=true"),
     ],
     [
         InlineKeyboardButton(text="ᴀʙᴏᴜᴛ", callback_data="yone_"),
