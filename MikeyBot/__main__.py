@@ -34,12 +34,10 @@ from MikeyBot import (
     PORT,
     URL,
     LOGGER,
-    BLACKLIST_CHATS,
-    WHITELIST_CHATS,
+    
 )
 
-# needed to dynamically load modules
-# NOTE: Module order is not guaranteed, specify that in the config file!
+
 from MikeyBot.modules import ALL_MODULES
 from MikeyBot.modules.disable import DisableAbleCommandHandler
 from MikeyBot.modules.helper_funcs.chat_status import is_user_admin
@@ -73,7 +71,7 @@ def get_readable_time(seconds: int) -> str:
     return ping_time
 
 
-ZELDRIS_IMG = "https://telegra.ph/file/1fa00785f30375c0c1b50.jpg"
+MIKEY_IMG = "https://telegra.ph/file/7cdc6f03a90f014be9b5f.jpg*
 
 PM_START_TEXT = """
 Hey there! my name is *{}*. 
@@ -82,9 +80,6 @@ A modular group management bot with useful features. [ㅤ](https://telegra.ph/fi
 ◑ *Uptime:* `{}`
 ◑ `{}` *Users, across* `{}` *chats.*
 
-Any issues or need help related to me?
-Join our official group [IDNCoderX](https://t.me/IDNCoderX).
-Click help button to know my commands!
 """
 
 buttons = [
@@ -94,14 +89,14 @@ buttons = [
             callback_data="help_back",
         ),
         InlineKeyboardButton(
-            text="Updates 📢",
-            url="https://t.me/IDNCoder",
+            text="About Mikey",
+            callback_data="mikey_back",
         ),
     ],
     [
         InlineKeyboardButton(
-            text="Add Zeldris to Your Group 👥",
-            url="t.me/ZeldrisRobot?startgroup=true",
+            text="Add Mikey to Your Group 👥",
+            url="t.me/MikeySano_Robot?startgroup=true",
         ),
     ],
 ]
@@ -131,7 +126,7 @@ USER_SETTINGS = {}
 GDPR = []
 
 for module_name in ALL_MODULES:
-    imported_module = importlib.import_module("zeldris.modules." + module_name)
+    imported_module = importlib.import_module("MikeyBot.modules." + module_name)
     if not hasattr(imported_module, "__mod_name__"):
         imported_module.__mod_name__ = imported_module.__name__
 
@@ -237,7 +232,7 @@ def start(update: Update, context: CallbackContext):
             )
     else:
         message.reply_photo(
-            ZELDRIS_IMG,
+            MIKEY_IMG,
             caption="<b>Yes, I'm alive!\nHaven't sleep since</b>: <code>{}</code>".format(
                 uptime
             ),
@@ -247,11 +242,11 @@ def start(update: Update, context: CallbackContext):
                     [
                         InlineKeyboardButton(
                             text="☎️ Support",
-                            url="https://t.me/IDNCoderX",
+                            url="https://t.me/Tanji_kamado_support",
                         ),
                         InlineKeyboardButton(
                             text="Updates 📡",
-                            url="https://t.me/IDNCoder",
+                            url="https://t.me/Tanjirou_Updates",
                         ),
                     ]
                 ]
@@ -671,7 +666,7 @@ def main():
     dispatcher.add_error_handler(error_handler)
 
     if WEBHOOK:
-        LOGGER.info("[Zeldris] Using webhooks.")
+        LOGGER.info("[MikeyBot] Using webhooks.")
         updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN)
 
         if CERT_PATH:
@@ -681,7 +676,7 @@ def main():
             client.run_until_disconnected()
 
     else:
-        LOGGER.info("[Zeldris] Using long polling.")
+        LOGGER.info("[MikeyBot] Using long polling.")
         updater.start_polling(timeout=15, read_latency=4, drop_pending_updates=True)
         if MESSAGE_DUMP:
             updater.bot.send_message(chat_id=MESSAGE_DUMP, text="I'm a Demon King...")
@@ -693,6 +688,6 @@ def main():
 
 
 if __name__ == "__main__":
-    LOGGER.info("[Zeldris] Successfully loaded modules: " + str(ALL_MODULES))
+    LOGGER.info("[MikeyBot] Successfully loaded modules: " + str(ALL_MODULES))
     client.start(bot_token=TOKEN)
     main()
