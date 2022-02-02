@@ -3,4 +3,8 @@ import re
 import register 
 import telethon as bbot
 
+@register(pattern=("/dance"))
+async def awake(event): 
+  "let's make a dance ohowo"
+
 
