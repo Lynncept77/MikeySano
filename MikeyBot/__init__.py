@@ -41,7 +41,8 @@ if ENV:
     except ValueError:
         raise Exception("[MikeyBot] Your OWNER_ID env variable is not a valid integer.")
 
-    MESSAGE_DUMP = os.environ.get("MESSAGE_DUMP", None)
+    ERROR_LOGS = os.environ.get("ERROR_LOGS", None)
+    EVENT_LOGS = os.environ.get("EVENT_LOGS", None)
     OWNER_USERNAME = os.environ.get("OWNER_USERNAME", None)
 
     try:
