@@ -57,9 +57,9 @@ PM_START_TEXT = """
 ────「 {} 」────
 *Hey! {},*
 * I am Mikey! An Anime Themed Super Duper Cool Advance Bot For Managing Your Groups .*
-×~×~×~×~×~×~×~×~×~×~×~×
-• *Uptime:* `{}`
-• `{}` *users, Are My fans ✨----( 👀 )--------✨
-×~×~×~×~×~×~×~×~×~×~×~×
+»»»»»—————🎩—————«««««
+• *Uptime:* {}
+• {} *users, Are My fans ✨----( 👀 )--------✨
+»»»»»—————🎩—————«««««
 ➛ The Help Buttons That Are Below To Know How cool I am [.](pic?????) ××
 """
