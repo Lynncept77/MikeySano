@@ -5,12 +5,12 @@ import telethon as bbot
 
 @register(pattern=("/dance"))
 async def awake(event): 
-    TEXT = "**♡ OwO let's do party** \n\n"
-    TEXT += f"**♡ Are your in ** \n\n"
+    TEXT = "**OwO let's do party** \n\n"
+    TEXT += f"** Are your in ** \n\n"
 BUTTON = [
         [
             Button.url("Yes", "OwO"),
-            Button.url("no", "OwO"),
+            Button.url("no", "OwO why"),
         ]
     ]
     await tbot.send_file(event.chat_id, caption=TEXT, buttons=BUTTON)
