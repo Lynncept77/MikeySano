@@ -96,7 +96,7 @@ buttons = [
         ),
         InlineKeyboardButton(
             text="Updates 📢",
-            url="https://t.me/{UPDATE_CHANNEL}",
+            url="https://t.me/IDNCoder",
         ),
     ],
     [
@@ -107,17 +107,6 @@ buttons = [
     ],
 ]
 
-HELP_STRINGS = f"""
-Hello there! My name is *{dispatcher.bot.first_name}*.
-I'm a modular group management bot with a few fun extras! Have a look at the following for an idea of some of \
-the things I can help you with.
-*Main* commands available:
-× /start: Starts me, can be used to check i'm alive or no...
-× /help: PM's you this message.
-× /help <module name>: PM's you info about that module.
-× /settings: in PM: will send you your settings for all supported modules.
-- in a group: will redirect you to pm, with all that chat's settings.
-\nClick on the buttons below to get documentation about specific modules!"""
 
 IMPORTED = {}
 MIGRATEABLE = []
@@ -132,7 +121,7 @@ USER_SETTINGS = {}
 GDPR = []
 
 for module_name in ALL_MODULES:
-    imported_module = importlib.import_module("zeldris.modules." + module_name)
+    imported_module = importlib.import_module("MikeyBot.modules." + module_name)
     if not hasattr(imported_module, "__mod_name__"):
         imported_module.__mod_name__ = imported_module.__name__
 
@@ -248,11 +237,11 @@ def start(update: Update, context: CallbackContext):
                     [
                         InlineKeyboardButton(
                             text="☎️ Support",
-                            url="https://t.me/{SUPPORT_CHAT}",
+                            url="https://t.me/IDNCoderX",
                         ),
                         InlineKeyboardButton(
                             text="Updates 📡",
-                            url="https://t.me/{UPDATE_CHANNEL}",
+                            url="https://t.me/IDNCoder",
                         ),
                     ]
                 ]
