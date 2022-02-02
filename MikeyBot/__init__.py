@@ -81,7 +81,7 @@ else:
     try:
         OWNER_ID = int(Config.OWNER_ID)
     except ValueError:
-        raise Exception("[Zeldris] Your OWNER_ID variable is not a valid integer.")
+        raise Exception("[MikeyBot] Your OWNER_ID variable is not a valid integer.")
 
     MESSAGE_DUMP = Config.MESSAGE_DUMP
     OWNER_USERNAME = Config.OWNER_USERNAME
@@ -100,7 +100,6 @@ else:
 
     DB_URI = Config.SQLALCHEMY_DATABASE_URI
     REDIS_URL = Config.REDIS_URL
-    DONATION_LINK = Config.DONATION_LINK
     LOAD = Config.LOAD
     NO_LOAD = Config.NO_LOAD
     DEL_CMDS = Config.DEL_CMDS
@@ -114,9 +113,7 @@ else:
     SUPPORT_CHAT = Config.SUPPORT_CHAT
     API_HASH = Config.API_HASH
     API_ID = Config.API_ID
-    SPAMWATCH = Config.SPAMWATCH_API
-    SPAMMERS = Config.SPAMMERS
-
+    
 # Dont Remove This!!!
 DEV_USERS.add(OWNER_ID)
 
