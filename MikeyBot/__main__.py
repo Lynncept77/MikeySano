@@ -4,7 +4,7 @@ import re
 from sys import argv
 from typing import Optional
 
-from YoneRobot import (
+from MikeyBot import (
     ALLOW_EXCL,
     CERT_PATH,
     DONATION_LINK,
@@ -25,9 +25,9 @@ from YoneRobot import (
 
 # needed to dynamically load modules
 # NOTE: Module order is not guaranteed, specify that in the config file!
-from YoneRobot.modules import ALL_MODULES
-from YoneRobot.modules.helper_funcs.chat_status import is_user_admin
-from YoneRobot.modules.helper_funcs.misc import paginate_modules
+from MikeyBot.modules import ALL_MODULES
+from MikeyBot.modules.helper_funcs.chat_status import is_user_admin
+from MikeyBot.modules.helper_funcs.misc import paginate_modules
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Update
 from telegram.error import (
     BadRequest,
@@ -72,10 +72,23 @@ def get_readable_time(seconds: int) -> str:
 
     return ping_time
 
+PM_START_TEXT="""
+────「 [{}]() 」────
 
-PM_START_TEXT = """
-ʜᴇʟʟᴏ [🤗](https://telegra.ph/file/ebf62ff4c5668adcfa28c.jpg), ɪᴍ ʏᴏɴᴇ ᴀ ʜɪɢʜʏ ᴀᴅᴠᴀɴᴄᴇᴅ ʙᴏᴛ ᴡɪᴛʜ ʟᴏᴛꜱ ᴏꜰ ᴀᴍᴀᴢɪɴɢ ᴛᴏᴏʟꜱ.
-`ɪ'ᴍ ʜᴇʀᴇ ᴛᴏ ʜᴇʟᴘ ʏᴏᴜ ᴍᴀɴᴀɢᴇ ʏᴏᴜʀ ɢʀᴏᴜᴘꜱ! ʜɪᴛ` /help   
+Heyyo `{}`, Mikey here!!
+
+*I am an Anime themed advance group management bot with a lot of awesome Features*
+
+➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+
+• *Uptime:* `{}`
+
+➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+
+• `{}` *users, across* `{}` *chats.*
+
+
+
 """
 
 buttons = [
