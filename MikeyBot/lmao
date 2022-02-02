@@ -7,5 +7,12 @@ import telethon as bbot
 async def awake(event): 
     TEXT = "**♡ OwO let's do party** \n\n"
     TEXT += f"**♡ Are your in ** \n\n"
+BUTTON = [
+        [
+            Button.url("Yes", "OwO"),
+            Button.url("no", "OwO"),
+        ]
+    ]
+    await tbot.send_file(event.chat_id, caption=TEXT, buttons=BUTTON)
 
 
