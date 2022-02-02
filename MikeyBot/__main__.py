@@ -10,7 +10,7 @@ import MikeyBot.modules.sql.users_sql as sql
 
 from sys import argv
 from typing import Optional
-from zeldris import (
+from MikeyBot import (
     ALLOW_EXCL,
     CERT_PATH,
     LOGGER,
