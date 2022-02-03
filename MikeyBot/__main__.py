@@ -386,23 +386,41 @@ def yone_about_callback(update, context):
 
 Mikey's licensed under the GNU General Public License v3.0
 
- Click on button bellow to get basic help for Tanjirou Kamado.""",
+ Click on button bellow to get basic help for Mikey Sano.""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
                 [
                  [
-                    InlineKeyboardButton(text="Back", callback_data="mikey_back")
+                    InlineKeyboardButton(text="button0", callback_data=""),
+                    InlineKeyboardButton(text="button1", callback_data=""),
+                 ],
+                 [
+                    InlineKeyboardButton(text="button2", callback_data=""),
+                    InlineKeyboardButton(text="button3", callback_data=""),
+                 ],
+                 [
+                    InlineKeyboardButton(text="button4", url=""),
+                ],
+                 [
+                    InlineKeyboardButton(text="🔙", callback_data="tanji_back"),
                  ]
                 ]
             ),
         )
     elif query.data == "mikey_back":
+        first_name = update.effective_user.first_name
+        uptime = get_readable_time((time.time() - StartTime))
         query.message.edit_text(
-                PM_START_TEXT,
+                PM_START_TEXT.format(
+                    escape_markdown(first_name),
+                    escape_markdown(uptime),
+                    sql.num_users(),
+                    sql.num_chats()),
                 reply_markup=InlineKeyboardMarkup(buttons),
                 parse_mode=ParseMode.MARKDOWN,
                 timeout=60,
                 disable_web_page_preview=False,
         )
+
 
