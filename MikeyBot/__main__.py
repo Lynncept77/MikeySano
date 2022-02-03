@@ -253,7 +253,8 @@ def start(update: Update, context: CallbackContext):
                 timeout=60,
             )
 
-else:
+       
+    else:
         update.effective_message.reply_text(
             "I'm awake already!\n<b>Haven't slept since:</b> <code>{}</code>".format(
                 uptime
