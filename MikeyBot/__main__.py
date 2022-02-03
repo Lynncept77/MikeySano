@@ -82,7 +82,7 @@ PM_START_TEXT = """
 * 卐 I am Mikey! An Anime Themed Super Duper Cool Advance Bot For Managing Your Groups 卍.*
 »»»»»—————🎩—————«««««
 • *Uptime:* {}
-• {} *users, Are My fans ✨----( 👀 )--------✨
+• {} *users, Are My fans ✨------( 👀 )------✨
 »»»»»—————🎩—————«««««
 ➛ 卐  The Help Buttons That Are Below To Know How cool I am [.](pic?????) ×× 卍
 """
