@@ -95,17 +95,16 @@ Haven't slept since: {}
 
 
 buttons = [
-    [
-      InlineKeyboardButton(text="More", callback_data="Mikey_"),    
-            ],
-    [ 
+[
+         InlineKeyboardButton(text="More", callback_data="Mikey_"),    
+    ],[ 
          InlineKeyboardButton(text="Help", callback_data="help_back"), 
          ),
-    ],
-    [
+    ],[
        InlineKeyboardButton(
             text="Add Me In Your Group ➕", url="t.me/MikeySano_Robot?startgroup=true"),
-    ]
+    ],
+]
 
 @Client.on_callback_query(filters.regex("Mikey_"))
 async def Mikey(_, query: CallbackQuery):
