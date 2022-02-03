@@ -109,22 +109,22 @@ buttons = [
 ]
 
 
-@Client.on_callback_query(filters.regex("Mikey"))
+@Client.on_callback_query(filters.regex("Mikey_"))
 async def Mikey(_, query: CallbackQuery):
-    await query.answer("Mikey")
+    await query.answer("Mikey_")
     await query.edit_message_text(
         f"""✨ **Hello [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) !**
 » Choose the Button below to read the explanation & see the list of available Commands !
-⚡ __Powered by {BOT_NAME} A.I__""",
+""",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("👷🏻 Updates", callback_data="telegram link"),
-                    InlineKeyboardButton("🧙🏻 Support", callback_data="telegram link"),
+                    InlineKeyboardButton("Extras", callback_data="Mikey_"),
+                    InlineKeyboardButton("Support", callback_data="Mikey_"),
                 ],[
-                    InlineKeyboardButton("📚 Credits", callback_data="telegram")
+                    InlineKeyboardButton("Credits", callback_data="Mikey_")
                 ],[
-                    InlineKeyboardButton("🔙 XYZ", callback_data="link")
+                    InlineKeyboardButton("🔙", callback_data="help_back")
                 ],
             ]
         ),
