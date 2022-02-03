@@ -105,9 +105,7 @@ buttons = [
     [
        InlineKeyboardButton(
             text="Add Me In Your Group ➕", url="t.me/MikeySano_Robot?startgroup=true"),
-    ],
-]
-
+    ]
 
 @Client.on_callback_query(filters.regex("Mikey_"))
 async def Mikey(_, query: CallbackQuery):
