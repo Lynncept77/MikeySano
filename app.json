@@ -1,7 +1,7 @@
 {
   "name": "MikeyBot",
   "description": "Telegram group management bot.",
-  "logo": "",
+  "logo": "https://telegra.ph/file/503225f6e4fe7be92886d.jpg",
   "keywords": [
     "telegram",
     "anime",
@@ -10,7 +10,6 @@
     "Zeldris"
   ],
   "repository": "https://github.com/Lynncept77/MikeySano",
-  "website": "https://idn-c-x.github.io",
   "success_url": "t.me/Lynncept_iz_here",
   "addons": [
    {
