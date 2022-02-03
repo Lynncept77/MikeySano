@@ -5,7 +5,6 @@ import time
 
 import telegram.ext as tg
 from pyrogram import Client, errors
-from redis import StrictRedis
 from telethon import TelegramClient
 from telethon.sessions import MemorySession
 
@@ -58,8 +57,6 @@ if ENV:
     CERT_PATH = os.environ.get("CERT_PATH")
     MONGO_DB_URI = os.environ.get("MONGO_DB_URI", None)
     DB_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
-    REDIS_URL = os.environ.get("REDIS_URL")
-    DONATION_LINK = os.environ.get("DONATION_LINK")
     LOAD = os.environ.get("LOAD", "").split()
     TEMP_DOWNLOAD_DIRECTORY = ("./")
     NO_LOAD = os.environ.get("NO_LOAD", "").split()
@@ -101,13 +98,11 @@ else:
     CERT_PATH = Config.CERT_PATH
 
     DB_URI = Config.SQLALCHEMY_DATABASE_URI
-    REDIS_URL = Config.REDIS_URL
     LOAD = Config.LOAD
     NO_LOAD = Config.NO_LOAD
     DEL_CMDS = Config.DEL_CMDS
     STRICT_GBAN = Config.STRICT_GBAN
     WORKERS = Config.WORKERS
-    BAN_STICKER = Config.BAN_STICKER
     ALLOW_EXCL = Config.ALLOW_EXCL
     CUSTOM_CMD = Config.CUSTOM_CMD
     API_WEATHER = Config.API_OPENWEATHER
@@ -119,16 +114,6 @@ else:
 # Dont Remove This!!!
 DEV_USERS.add(OWNER_ID)
 
-
-REDIS = StrictRedis.from_url(REDIS_URL, decode_responses=True)
-try:
-    REDIS.ping()
-    LOGGER.info("[MikeyBot] Your redis server is now alive!")
-except BaseException:
-    raise Exception("[MikeyBot] Your redis server is not alive, please check again.")
-finally:
-    REDIS.ping()
-    LOGGER.info("[MikeyBot] Your redis server is now alive!")
 
 # Telethon
 client = TelegramClient(MemorySession(), API_ID, API_HASH)
