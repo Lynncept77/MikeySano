@@ -96,15 +96,15 @@ Haven't slept since: {}
 
 buttons = [
     [
-        InlineKeyboardButton(
+      InlineKeyboardButton(text="More", callback_data="Mikey_"),    
+            ],
+    [ 
+         InlineKeyboardButton(text="Help", callback_data="help_back"), 
+         ),
+    ],
+    [
+       InlineKeyboardButton(
             text="Add Me In Your Group ➕", url="t.me/MikeySano_Robot?startgroup=true"),
-    ],
-    [
-        InlineKeyboardButton(text="More", callback_data="Mikey_"),
-          ),
-    ],
-    [
-        InlineKeyboardButton(text="Help", callback_data="help_back"),
     ],
 ]
 
