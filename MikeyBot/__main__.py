@@ -108,6 +108,28 @@ buttons = [
     ],
 ]
 
+
+@Client.on_callback_query(filters.regex("Mikey"))
+async def Mikey(_, query: CallbackQuery):
+    await query.answer("Mikey")
+    await query.edit_message_text(
+        f"""✨ **Hello [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) !**
+» Choose the Button below to read the explanation & see the list of available Commands !
+⚡ __Powered by {BOT_NAME} A.I__""",
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton("👷🏻 Updates", callback_data="telegram link"),
+                    InlineKeyboardButton("🧙🏻 Support", callback_data="telegram link"),
+                ],[
+                    InlineKeyboardButton("📚 Credits", callback_data="telegram")
+                ],[
+                    InlineKeyboardButton("🔙 XYZ", callback_data="link")
+                ],
+            ]
+        ),
+    )
+
 HELP_STRINGS = """
 Hi I'm [Mikey](https://telegra.ph/file/7cdc6f03a90f014be9b5f.jpg) 
 Click on buttons to get info about modules.."""
