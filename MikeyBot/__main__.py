@@ -96,7 +96,7 @@ Haven't slept since: {}
 
 buttons = [
     [
-        InlineKeyboardButton(text="More", callback_data="Mikey_"),
+        InlineKeyboardButton(text="More", callback_data="mikey_"),
     ],
     [
         InlineKeyboardButton(text="Help", callback_data="help_back"),        
@@ -108,7 +108,7 @@ buttons = [
 ]
 
 
-@Client.on_callback_query(filters.regex("Mikey_"))
+@Client.on_callback_query(filters.regex("mikey_"))
 async def Mikey(_, query: CallbackQuery):
     await query.answer("Mikey_")
     await query.edit_message_text(
@@ -118,10 +118,10 @@ async def Mikey(_, query: CallbackQuery):
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("Extras", callback_data="Mikey_"),
-                    InlineKeyboardButton("Support", callback_data="Mikey_"),
+                    InlineKeyboardButton("Extras", callback_data="mikey_"),
+                    InlineKeyboardButton("Support", callback_data="mikey_"),
                 ],[
-                    InlineKeyboardButton("Credits", callback_data="Mikey_")
+                    InlineKeyboardButton("Credits", callback_data="mikey_")
                 ],[
                     InlineKeyboardButton("🔙", callback_data="help_back")
                 ],
@@ -372,9 +372,9 @@ elif prev_match:
         pass
 
 @run_async
-def yone_about_callback(update, context):
+def mikey_about_callback(update, context):
     query = update.callback_query
-    if query.data == "mikey_":
+    if query.data == "mikey_back":
         query.message.edit_text(
             text="""๏ I'm Mikey, a powerful group management bot built to help you manage your group easily.
 • I can restrict users.
@@ -392,18 +392,18 @@ Mikey's licensed under the GNU General Public License v3.0
             reply_markup=InlineKeyboardMarkup(
                 [
                  [
-                    InlineKeyboardButton(text="button0", callback_data=""),
+                    InlineKeyboardButton(text="button0", callback_data="mikey_"),
                     InlineKeyboardButton(text="button1", callback_data=""),
                  ],
                  [
-                    InlineKeyboardButton(text="button2", callback_data=""),
-                    InlineKeyboardButton(text="button3", callback_data=""),
+                    InlineKeyboardButton(text="button2", callback_data="mikey_"),
+                    InlineKeyboardButton(text="button3", callback_data="mikey_"),
                  ],
                  [
                     InlineKeyboardButton(text="button4", url=""),
                 ],
                  [
-                    InlineKeyboardButton(text="🔙", callback_data="tanji_back"),
+                    InlineKeyboardButton(text="🔙", callback_data="mikey_back"),
                  ]
                 ]
             ),
