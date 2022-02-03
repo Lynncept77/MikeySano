@@ -634,3 +634,100 @@ def get_settings(update: Update, context: CallbackContext):
     else:
         send_settings(chat.id, user.id, True)
 
+
+def migrate_chats(update: Update, context: CallbackContext):
+    msg = update.effective_message  # type: Optional[Message]
+    if msg.migrate_to_chat_id:
+        old_chat = update.effective_chat.id
+        new_chat = msg.migrate_to_chat_id
+    elif msg.migrate_from_chat_id:
+        old_chat = msg.migrate_from_chat_id
+        new_chat = update.effective_chat.id
+    else:
+        return
+
+    LOGGER.info("Migrating from %s, to %s", str(old_chat), str(new_chat))
+    for mod in MIGRATEABLE:
+        mod.__migrate__(old_chat, new_chat)
+
+    LOGGER.info("Successfully migrated!")
+    raise DispatcherHandlerStop
+
+
+def main():
+
+   if SUPPORT_CHAT is not None and isinstance(SUPPORT_CHAT, str):
+        try:
+            dispatcher.bot.sendMessage(
+                f"@{SUPPORT_CHAT}", 
+                f"""**Boom Boom!!**
+**Python:** `{memek()}`
+**Telegram Library:** `v{peler}`""",
+                parse_mode=ParseMode.MARKDOWN
+            )
+        except Unauthorized:
+            LOGGER.warning(
+                "Bot isnt able to send message to support_chat, go and check!"
+            )
+        except BadRequest as e:
+            LOGGER.warning(e.message)
+
+    test_handler = CommandHandler("test", test, run_async=True)
+    start_handler = CommandHandler("start", start, run_async=True)
+
+    help_handler = CommandHandler("help", get_help, run_async=True)
+    help_callback_handler = CallbackQueryHandler(
+        help_button, pattern=r"help_.*", run_async=True
+    )
+    settings_handler = CommandHandler("settings", get_settings, run_async=True)
+    settings_callback_handler = CallbackQueryHandler(
+        settings_button, pattern=r"stngs_", run_async=True
+    )
+
+    about_callback_handler = CallbackQueryHandler(
+        tanji_about_callback, pattern=r"tanji_", run_async=True
+    )
+    migrate_handler = MessageHandler(
+        Filters.status_update.migrate, migrate_chats, run_async=True
+    )
+
+dispatcher.add_handler(test_handler)
+    dispatcher.add_handler(start_handler)
+    dispatcher.add_handler(help_handler)
+    dispatcher.add_handler(about_callback_handler)
+    dispatcher.add_handler(source_callback_handler)
+    dispatcher.add_handler(settings_handler)
+    dispatcher.add_handler(help_callback_handler)
+    dispatcher.add_handler(settings_callback_handler)
+    dispatcher.add_handler(migrate_handler)
+    dispatcher.add_handler(donate_handler)
+
+    dispatcher.add_error_handler(error_callback)
+
+    if WEBHOOK:
+        LOGGER.info("Using webhooks.")
+        updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN)
+
+        if CERT_PATH:
+            updater.bot.set_webhook(url=URL + TOKEN, certificate=open(CERT_PATH, "rb"))
+        else:
+            updater.bot.set_webhook(url=URL + TOKEN)
+
+    else:
+        LOGGER.info("Using long polling.")
+        updater.start_polling(timeout=15, read_latency=4, drop_pending_updates=True)
+
+    if len(argv) not in (1, 3, 4):
+        telethn.disconnect()
+    else:
+        telethn.run_until_disconnected()
+
+   updater.idle()
+
+
+if __name__ == "__main__":
+    LOGGER.info("Successfully loaded modules: " + str(ALL_MODULES))
+    telethn.start(bot_token=TOKEN)
+    pbot.start()
+    main()
+
