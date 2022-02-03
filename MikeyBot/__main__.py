@@ -6,15 +6,14 @@ import time
 import re
 import sys
 import traceback
-import AsunaRobot.modules.sql.users_sql as sql
+import MikeyBot.modules.sql.users_sql as sql
 from sys import argv
 from typing import Optional
 from telegram import __version__ as peler
 from platform import python_version as memek
-from AsunaRobot import (
+from MikeyBot import (
     ALLOW_EXCL,
     CERT_PATH,
-    DONATION_LINK,
     LOGGER,
     OWNER_ID,
     PORT,
@@ -22,7 +21,6 @@ from AsunaRobot import (
     TOKEN,
     URL,
     WEBHOOK,
-    SUPPORT_CHAT,
     dispatcher,
     StartTime,
     telethn,
@@ -32,9 +30,9 @@ from AsunaRobot import (
 
 # needed to dynamically load modules
 # NOTE: Module order is not guaranteed, specify that in the config file!
-from AsunaRobot.modules import ALL_MODULES
-from AsunaRobot.modules.helper_funcs.chat_status import is_user_admin
-from AsunaRobot.modules.helper_funcs.misc import paginate_modules
+from MikeyBot.modules import ALL_MODULES
+from MikeyBot.modules.helper_funcs.chat_status import is_user_admin
+from MikeyBot.modules.helper_funcs.misc import paginate_modules
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Update
 from telegram.error import (
     BadRequest,
@@ -92,12 +90,12 @@ PM_START_TEXT = """
 
 buttons = [
     [
-        InlineKeyboardButton(text="support", url="https://t.me/komiXsupport"),
-        InlineKeyboardButton(text="Get Help", url=f"https://t.me/komiXrobot?start=help"),
+        InlineKeyboardButton(text="More", callback_data="mikey_"),
+        InlineKeyboardButton(text="Help", callback_data=f"help_back"),
     ],
     [
         InlineKeyboardButton(
-            text=" Add Komi To Your Group ", url="t.me/komixRobot?startgroup=new"),
+            text=" Add Mikey To Your Group ", url="t.me/Mikey_SanoRobot?startgroup=new"),
     ],
 ]
 
@@ -107,12 +105,7 @@ HELP_STRINGS = """
 
 HELP_IMG = "https://te.legra.ph/file/5c54e1ffe891e1749403b.jpg"
 
-KOMISTART ="https://te.legra.ph/file/12dac874dc3fbd9dc3f09.mp4"
-
-DONATE_STRING = """Heya, glad to hear you want to donate!
- You can support the project by contacting @excrybaby \
- Supporting isnt always financial! \
- Those who cannot provide monetary support are welcome to help us develop the bot at ."""
+MIKEYSTART ="https://te.legra.ph/file/12dac874dc3fbd9dc3f09.mp4"
 
 IMPORTED = {}
 MIGRATEABLE = []
