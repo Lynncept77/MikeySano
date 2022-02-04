@@ -74,9 +74,24 @@ def get_readable_time(seconds: int) -> str:
 
     return ping_time
 
-LUNA_IMG = "https://telegra.ph/file/ecb9b93a96b0b1a0c4c1b.jpg"
+MIKEY_IMG = "https://telegra.ph/file/7cdc6f03a90f014be9b5f.jpg"
 
 PM_START_TEXT = """
+────「 {} 」────
+
+*Hey! {},*
+
+* 卐 I am Mikey! An Anime Themed Super Duper Cool Advance Bot For Managing Your Groups 卍.*
+
+»»»»»—————🎩—————«««««
+
+• *Uptime:* {}
+
+• {} *users, Are My fans ✨----( 👀 )--------✨
+
+»»»»»—————🎩—————«««««
+
+➛卐  The Help Buttons That Are Below To Know How cool I am [.](https://telegra.ph/file/15c927e8a8860761d6094.jpg) ×× 卍 
 """
 
 buttons = [
