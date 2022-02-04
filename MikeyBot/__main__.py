@@ -715,10 +715,10 @@ def main():
     about_callback_handler = CallbackQueryHandler(
         emiko_about_callback, pattern=r"emiko_", run_async=True
     )
-   migrate_handler = MessageHandler(
-        Filters.status_update.migrate, migrate_chats, run_async=True
+    migrate_handler = MessageHandler(
+       Filters.status_update.migrate, migrate_chats
     )
-
+   
     dispatcher.add_handler(test_handler)
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(help_handler)
