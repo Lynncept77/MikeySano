@@ -711,12 +711,10 @@ def main():
     )
 
     about_callback_handler = CallbackQueryHandler(
-        emiko_about_callback, pattern=r"emiko_", run_async=True
+        mikey_about_callback, pattern=r"emiko_", run_async=True
     )
 
-    source_callback_handler = CallbackQueryHandler(
-        Source_about_callback, pattern=r"source_", run_async=True
-    )
+  
 
     donate_handler = CommandHandler("donate", donate, run_async=True)
     migrate_handler = MessageHandler(
