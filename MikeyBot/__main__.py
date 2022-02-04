@@ -28,6 +28,7 @@ from MikeyBot import (
 # NOTE: Module order is not guaranteed, specify that in the config file!
 from MikeyBot.modules import ALL_MODULES
 from MikeyBot.modules.helper_funcs.chat_status import is_user_admin
+from telegram import __version__ as peler
 from MikeyBot.modules.helper_funcs.misc import paginate_modules
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Update
 from telegram.error import (
