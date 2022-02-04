@@ -2,7 +2,7 @@ import logging
 import os
 import sys
 import time
-import spamwatch
+
 import aiohttp
 from aiohttp import ClientSession
 
