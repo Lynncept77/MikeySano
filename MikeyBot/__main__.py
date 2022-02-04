@@ -1,19 +1,14 @@
-import html
-import os
-import json
 import importlib
 import time
 import re
-import sys
-import traceback
-import MikeyBot.modules.sql.users_sql as sql
 from sys import argv
 from typing import Optional
-from telegram import __version__ as peler
 from platform import python_version as memek
-from MikeyBot import (
+
+from lunaBot import (
     ALLOW_EXCL,
     CERT_PATH,
+    DONATION_LINK,
     LOGGER,
     OWNER_ID,
     PORT,
@@ -31,9 +26,9 @@ from MikeyBot import (
 
 # needed to dynamically load modules
 # NOTE: Module order is not guaranteed, specify that in the config file!
-from MikeyBot.modules import ALL_MODULES
-from MikeyBot.modules.helper_funcs.chat_status import is_user_admin
-from MikeyBot.modules.helper_funcs.misc import paginate_modules
+from lunaBot.modules import ALL_MODULES
+from lunaBot.modules.helper_funcs.chat_status import is_user_admin
+from lunaBot.modules.helper_funcs.misc import paginate_modules
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Update
 from telegram.error import (
     BadRequest,
@@ -78,6 +73,7 @@ def get_readable_time(seconds: int) -> str:
 
     return ping_time
 
+LUNA_IMG = "https://telegra.ph/file/ecb9b93a96b0b1a0c4c1b.jpg"
 
 PM_START_TEXT = """
 """
@@ -95,12 +91,21 @@ buttons = [
     ],
 ]
 
-
 HELP_STRINGS = """
 Click on the button bellow to get description about specifics command."""
 
-EMI_IMG = ""
 
+
+DONATE_STRING = """Heya, glad to hear you want to donate!
+ You can support the project via [Paypal](#) or by contacting @akshi_s_ashu1 \
+ Supporting isnt always financial! \
+ Those who cannot provide monetary support are welcome to help us develop the bot at."""
+
+
+
+DONATE_STRING = """Hehe, senang mendengar Anda ingin menyumbang!
+ [klick disini](https://t.me/zeinzo_1) ❤️
+"""
 
 IMPORTED = {}
 MIGRATEABLE = []
@@ -113,7 +118,7 @@ CHAT_SETTINGS = {}
 USER_SETTINGS = {}
 
 for module_name in ALL_MODULES:
-    imported_module = importlib.import_module("MikeyBot.modules." + module_name)
+    imported_module = importlib.import_module("lunaBot.modules." + module_name)
     if not hasattr(imported_module, "__mod_name__"):
         imported_module.__mod_name__ = imported_module.__name__
 
@@ -161,6 +166,7 @@ def send_help(chat_id, text, keyboard=None):
     )
 
 
+@run_async
 def test(update: Update, context: CallbackContext):
     # pprint(eval(str(update)))
     # update.effective_message.reply_text("Hola tester! _I_ *have* `markdown`", parse_mode=ParseMode.MARKDOWN)
@@ -168,6 +174,7 @@ def test(update: Update, context: CallbackContext):
     print(update.effective_message)
 
 
+@run_async
 def start(update: Update, context: CallbackContext):
     args = context.args
     uptime = get_readable_time((time.time() - StartTime))
@@ -183,7 +190,7 @@ def start(update: Update, context: CallbackContext):
                     update.effective_chat.id,
                     HELPABLE[mod].__help__,
                     InlineKeyboardMarkup(
-                        [[InlineKeyboardButton(text="Go Back", callback_data="help_back")]]
+                        [[InlineKeyboardButton(text="ʙᴀᴄᴋ", callback_data="help_back")]]
                     ),
                 )
 
@@ -200,25 +207,23 @@ def start(update: Update, context: CallbackContext):
                 IMPORTED["rules"].send_rules(update, args[0], from_pm=True)
 
         else:
-            first_name = update.effective_user.first_name
             update.effective_message.reply_text(
-                PM_START_TEXT.format(
-                    escape_markdown(first_name),
-                    escape_markdown(uptime),
-                    sql.num_users(),
-                    sql.num_chats()),                        
+                PM_START_TEXT,
                 reply_markup=InlineKeyboardMarkup(buttons),
                 parse_mode=ParseMode.MARKDOWN,
                 timeout=60,
-                disable_web_page_preview=False,
             )
     else:
-        update.effective_message.reply_text(
-            f"<b>Hi I'm Mikey robot!</b>\n<b>Started working since:</b> <code>{uptime}</code>",
-            parse_mode=ParseMode.HTML
-       )
-
-
+        update.effective_message.reply_photo(
+            LUNA_IMG, caption= "I'm awake already!\n<b>Haven't slept since:</b> <code>{}</code>".format(
+                uptime
+            ),
+            parse_mode=ParseMode.HTML,
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton(text="Sᴜᴘᴘᴏʀᴛ", url="https://t.me/Miss_AkshiV1_Support")]]
+            ),
+        )
+        
 def error_handler(update, context):
     """Log the error and send a telegram message to notify the developer."""
     # Log the error before we do anything else, so we can see it even if something breaks.
@@ -277,6 +282,7 @@ def error_callback(update: Update, context: CallbackContext):
         # handle all other telegram related errors
 
 
+@run_async
 def help_button(update, context):
     query = update.callback_query
     mod_match = re.match(r"help_module\((.+?)\)", query.data)
@@ -300,7 +306,7 @@ def help_button(update, context):
                 parse_mode=ParseMode.MARKDOWN,
                 disable_web_page_preview=True,
                 reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton(text="Go Back", callback_data="help_back")]]
+                    [[InlineKeyboardButton(text="ʙᴀᴄᴋ", callback_data="help_back")]]
                 ),
             )
 
@@ -341,96 +347,273 @@ def help_button(update, context):
         pass
 
 
-def mikey_about_callback(update, context):
+@run_async
+def luna_about_callback(update, context):
     query = update.callback_query
-    if query.data == "emiko_":
+    if query.data == "luna_":
         query.message.edit_text(
-            text="",
+            text="""Hi again! I'am a full-fledged group management bot built to help you manage your group easily.\n
+                    \nI can do lot of stuff, some of them are:
+                    \n• Restrict users who flood your chat using my anti-flood module.
+                    \n• Safeguard your group with the advanced and handy Antispam system.
+                    \n• Greet users with media + text and buttons, with proper formatting.
+                    \n• Save notes and filters with proper formatting and reply markup.\n
+                    \nNote: I need to be promoted with proper admin permissions to fuction properly.\n
+                    \nCheck Setup Guide to learn on setting up the bot and on help to learn more.""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
-                 [
-                  [
-                    InlineKeyboardButton(text="Support", callback_data="mikey_support"),
-                    InlineKeyboardButton(text="Extras", callback_data="mikey_extras"),
-                 ],
-                 [
-                    InlineKeyboardButton(text="Go Back", callback_data="mikey_back"),
-                 ]
+                [
+                    [
+                        InlineKeyboardButton(
+                            text="Setup Guide", callback_data="luna_aselole"
+                        ),
+                        InlineKeyboardButton(
+                            text="T & C", callback_data="luna_puqi"
+                        ),
+                    ],
+                    [InlineKeyboardButton(text="ʙᴀᴄᴋ", callback_data="luna_back")],
                 ]
             ),
         )
-    elif query.data == "emiko_back":
-        first_name = update.effective_user.first_name
-        uptime = get_readable_time((time.time() - StartTime))
+    elif query.data == "luna_back":
         query.message.edit_text(
-                PM_START_TEXT.format(
-                    escape_markdown(first_name),
-                    escape_markdown(uptime),
-                    sql.num_users(),
-                    sql.num_chats()),
+                PM_START_TEXT,
                 reply_markup=InlineKeyboardMarkup(buttons),
                 parse_mode=ParseMode.MARKDOWN,
                 timeout=60,
                 disable_web_page_preview=False,
         )
 
-    
-    elif query.data == "emiko_support":
+    elif query.data == "luna_basichelp":
         query.message.edit_text(
-            text="*๏ Mikey support chats*"
-            "\nJoin My Support Group/Channel for see or report a problem on Emiko.",
+            text=f"**──「 Basic Guide 」──**"
+            f"\n\n1.) first, add me to your group.\n"
+            f"2.) then promote me as admin and give all permissions except anonymous admin.\n"
+            f"3.) after promoting me, type /reload in group to update the admin list.\n"
+            f"4.) add @LunaAssistant to your group or type /join to invite her.\n"
+            f"5.) turn on the video chat first before start to play music.\n"
+            f"\n📌 if userbot doesn't join voice chat make sure voice chat is active, or type /leave then type /join again..",
+            parse_mode=ParseMode.MARKDOWN,
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup(
+                [
+                 [
+                    InlineKeyboardButton(text="📗 Basic CMD", callback_data="luna_admin"),
+                    InlineKeyboardButton(text="📘 Advanced CMD", callback_data="luna_notes"),
+                 ],
+                 [
+                    InlineKeyboardButton(text="📙 Admin CMD", callback_data="luna_support"),
+                 ],
+                 [
+                    InlineKeyboardButton(text="Back", callback_data="luna_back"),
+                 
+                 ]
+                ]
+            ),
+        )
+    elif query.data == "luna_admin":
+        query.message.edit_text(
+            text=f"**──「 Basic Guide 」──**"
+            f"\n\n/play (song name) - play song from youtube"
+            f"\n/ytp (song name) - play song directly from"
+            f"\nB/stream (reply to audio) - play song using audio file."
+            f"\n/playlist - show the list song in queue"
+            f"\n/song (song name) - download song from youtube."
+            f"\n/search (video name) - search video from youtube detailed."
+            f"\n/lyric - (song name) lyrics scrapper",
+            parse_mode=ParseMode.MARKDOWN,
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton(text="Back", callback_data="luna_basichelp")]]
+            ),
+        )
+
+    elif query.data == "luna_notes":
+        query.message.edit_text(
+            text=f"──「 Advanced CMD 」──\n\n"
+            f"/start (in group) - see the bot alive status"
+            f"\n/reload - reload bot and refresh the admin list"
+            f"\n/ping - check the bot ping status"
+            f"\n/uptime - check the bot uptime status"
+            f"\n/id - show the group/user id & other",
+            parse_mode=ParseMode.HTML,
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton(text="Back", callback_data="luna_basichelp")]]
+            ),
+        )
+    elif query.data == "luna_support":
+        query.message.edit_text(
+            text=f"──「 Admin CMD 」──\n"
+            f"\n/player - show the music playing status"
+            f"\n/pause - pause the music streaming"
+            f"\n/resume - resume the music was paused"
+            f"\n/skip - skip to the next song"
+            f"\n/end - stop music streaming"
+            f"\n/join - invite userbot join to your group"
+            f"\n/leave - order the userbot to leave your group"
+            f"\n/auth - authorized user for using music bot"
+            f"\n/unauth - unauthorized for using music bot"
+            f"\n/control - open the player settings panel"
+            f"\n/delcmd (on | off) - enable / disable del cmd feature"
+            f"\n/music (on / off) - disable / enable music player in your group",
             parse_mode=ParseMode.MARKDOWN,
             reply_markup=InlineKeyboardMarkup(
                 [
                  [
-                    InlineKeyboardButton(text="Support", url="t.me/Tanji_kamado_support"),
-                    InlineKeyboardButton(text="Updates", url="https://t.me/Tanjirou_Updates"),
+                    InlineKeyboardButton(text="Back", callback_data="luna_basichelp"),
+                 
+                 ]
+                ]
+            ),
+        )
+    elif query.data == "luna_credit":
+        query.message.edit_text(
+            text=f"<b> `Cʀᴇᴅɪᴛ Fᴏʀ Lᴜɴᴀ Dᴇᴠ's` </b>\n"
+            f"\nHᴇʀᴇ Sᴏᴍᴇ Dᴇᴠᴇʟᴏᴘᴇʀs Hᴇʟᴘɪɴɢ Iɴ Mᴀᴋɪɴɢ Tʜᴇ Lᴜɴᴀ",
+            parse_mode=ParseMode.HTML,
+            reply_markup=InlineKeyboardMarkup(
+                [
+                 [
+                    InlineKeyboardButton(text="Alina", url="https://t.me/rizexx"),
+                    InlineKeyboardButton(text="Nao", url="https://t.me/xgothboi"),
                  ],
                  [
-                    InlineKeyboardButton(text="Go Back", callback_data="emiko_back"),
+                    InlineKeyboardButton(text="Yui", url="https://t.me/Badboyanim"),
+                    InlineKeyboardButton(text="Luna", url="https://t.me/tdrki_1"),
+                 ],
+                 [
+                    InlineKeyboardButton(text="Back", callback_data="luna_basichelp"),
                  
                  ]
                 ]
             ),
         )
 
-
-    elif query.data == "mikey_extras":
+    elif query.data == "luna_aselole":
         query.message.edit_text(
-            text=f"๏ Credis for Emiko\n"
-            "\nHere Developers Making And Give Inspiration For Made The EmikoRobot",
+            text=f"｢ Setup Guide 」\n"
+                 f"\nYou can add me to your group by clicking this link and selecting the chat.\n"
+                 f"\nRead Admin Permissions and Anti-spam for basic info.\n"
+                 f"\nRead Detailed Setup Guide to learn about setting up the bot in detail. (Recommended)\n"
+                 f"\nIf you do need help with further instructions feel free to ask in @Miss_AkshiV1_Support.",
             parse_mode=ParseMode.MARKDOWN,
+            disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
                 [
                  [
-                    InlineKeyboardButton(text="button1", url=""),
-                    InlineKeyboardButton(text="button2", url=""),
+                    InlineKeyboardButton(text="Admins Permissions", callback_data="luna_asu"),
+                    InlineKeyboardButton(text="Anti Spam", callback_data="luna_asi"),
                  ],
                  [
-                    InlineKeyboardButton(text="button3", url=""),
-                    InlineKeyboardButton(text="button4", url=""),
-                 ],
-                 [
-                    InlineKeyboardButton(text="button5", url=""),
-                    InlineKeyboardButton(text="button6", url=""),
-                 ],
-                 [
-                    InlineKeyboardButton(text="button7", url=""),
-                    InlineKeyboardButton(text="button8", url=""),
-                 ],
-                 [
-                    InlineKeyboardButton(text="button9", url=""),
-                    InlineKeyboardButton(text="button10", url=""),
-                 ],
-                 [
-                    InlineKeyboardButton(text="Go Back", callback_data="mikey_"),
+                    InlineKeyboardButton(text="Back", callback_data="luna_"),
+                 
                  ]
                 ]
             ),
         )
 
+    elif query.data == "luna_asu":
+        query.message.edit_text(
+            text=f"｢ Admin Permissions 」\n"
+                     f"\nTo avoid slowing down, Luna caches admin rights for each user. This cache lasts about 10 minutes; this may change in the future. This means that if you promote a user manually (without using the /promote command), Luna will only find out ~10 minutes later.\n"
+                    f"\nIf you want to update them immediately, you can use the /admincache or /reload command, that'll force Luna to check who the admins are again and their permissions\n"
+                    f"\nIf you are getting a message saying:\nYou must be this chat administrator to perform this action!\n"
+                    f"\nThis has nothing to do with Luna's rights; this is all about YOUR permissions as an admin. Luna respects admin permissions; if you do not have the Ban Users permission as a telegram admin, you won't be able to ban users with Luna. Similarly, to change Luna settings, you need to have the Change group info permission.\n"
+                    f"\nThe message very clearly states that you need these rights - not Luna.",
+            parse_mode=ParseMode.MARKDOWN,
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton(text="Back", callback_data="luna_aselole")]]
+            ),
+        )
 
+    elif query.data == "luna_asi":
+        query.message.edit_text(
+            text=f"｢ Anti-Spam Settings 」\n"
+                     f"\nAntispam: "
+                     f"\nBy enabling this, you can protect your groups free from scammers/spammers.\nRun /antispam on in your chat to enable.\nAppeal Chat: @Miss_AkshiV1_Support\n"
+                     f"\n✪ Anti-Flood allows you to keep your chat clean from flooding."
+                     f"\n✪ With the help of Blaclists you can blacklist words,sentences and stickers which you don't want to be used by group members."
+                     f"\n✪ By enabling Reports, admins get notified when users reports in chat."
+                     f"\n✪ Locks allows you to lock/restrict some comman items in telegram world."
+                     f"\n✪ Warnings allows to warn users and set auto-warns. "
+                     f"\n✪ Welcome Mute helps you prevent spambots or users flooding/spamming your group. Checl Greetings for more info",
+            parse_mode=ParseMode.MARKDOWN,
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton(text="Back", callback_data="luna_aselole")]]
+            ),
+        )
+
+    elif query.data == "luna_puqi":
+        query.message.edit_text(
+            text=f" ｢ Terms and Conditions 」\n"
+                f"\nTo use this bot, You need to agree with Terms and Conditions.\n"
+                f"\n✪ If someone is spamming your group, you can use report feature from your Telegram Client."
+                f"\n✪ Make sure antiflood is enabled, so that users cannot flood/spam your chat."
+                f"\n✪ Do not spam commands, buttons, or anything in bot PM, else you will be Ignored by bot or Gbanned."
+                f"\n✪ If you need to ask anything about this bot or you need help, reach us at @Miss_AkshiV1_Support"
+                f"\n✪ Make sure you read rules and follow them when you join Support Chat."
+                f"\n✪ Spamming in Support Chat, will reward you GBAN and reported to Telegram as well.\n"
+                f"\nTerms & Conditions can be changed anytime.",
+            parse_mode=ParseMode.MARKDOWN,
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup(
+                [
+                  [
+                     InlineKeyboardButton(text="Credits", callback_data="luna_angjay"),
+                     InlineKeyboardButton(text="Back", callback_data="luna_"),
+                  ]
+                ]
+            ),
+        )
+
+    elif query.data == "luna_angjay":
+        query.message.edit_text(
+            text=f"Luna is a powerful bot for managing groups with additional features.\n"
+              f"\nLuna's Licensed Under The GNU (General Public License v3.0)\n"
+              f"\nIf you have any question about Luna,"
+              f"\nreach us at Support Chat.",
+            parse_mode=ParseMode.MARKDOWN,
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup(
+                [
+                  [
+                     InlineKeyboardButton(text="Back", callback_data="luna_puqi"),
+                     InlineKeyboardButton(text="☎️ Support", url=f"https://t.me/Miss_AkshiV1_Support"),
+                  ]
+                ]
+            ),
+        )   
+
+@run_async
+def Source_about_callback(update, context):
+    query = update.callback_query
+    if query.data == "source_":
+        query.message.edit_text(
+            text=""" Hi.. ɪ'ᴀᴍ Lᴜɴᴀ*
+                 \nHere is the [sᴏᴜʀᴄᴇ ᴄᴏᴅᴇ](https://www Xhamster.com) .""",
+            parse_mode=ParseMode.MARKDOWN,
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup(
+                [
+                 [
+                    InlineKeyboardButton(text="Back", callback_data="source_back")
+                 ]
+                ]
+            ),
+        )
+    elif query.data == "source_back":
+        query.message.edit_text(
+                PM_START_TEXT,
+                reply_markup=InlineKeyboardMarkup(buttons),
+                parse_mode=ParseMode.MARKDOWN,
+                timeout=60,
+                disable_web_page_preview=False,
+        )
+
+@run_async
 def get_help(update: Update, context: CallbackContext):
     chat = update.effective_chat  # type: Optional[Chat]
     args = update.effective_message.text.split(None, 1)
@@ -461,10 +644,16 @@ def get_help(update: Update, context: CallbackContext):
                 [
                     [
                         InlineKeyboardButton(
-                            text="Help",
+                            text="Hᴇʟᴘ ❔",
                             url="t.me/{}?start=help".format(context.bot.username),
                         )
-                    ]
+                    ],
+                    [
+                        InlineKeyboardButton(
+                            text="Sᴜᴘᴘᴏʀᴛ Cʜᴀᴛ 📢 ",
+                            url="https://t.me/{}".format(SUPPORT_CHAT),
+                        )
+                    ],
                 ]
             ),
         )
@@ -482,7 +671,7 @@ def get_help(update: Update, context: CallbackContext):
             chat.id,
             text,
             InlineKeyboardMarkup(
-                [[InlineKeyboardButton(text="Go Back", callback_data="help_back")]]
+                [[InlineKeyboardButton(text="ʙᴀᴄᴋ", callback_data="help_back")]]
             ),
         )
 
@@ -506,7 +695,7 @@ def send_settings(chat_id, user_id, user=False):
         else:
             dispatcher.bot.send_message(
                 user_id,
-                "Seems like there aren't any user specific settings available :'(",
+                "Sepertinya tidak ada pengaturan khusus pengguna yang tersedia :'(",
                 parse_mode=ParseMode.MARKDOWN,
             )
 
@@ -531,6 +720,7 @@ def send_settings(chat_id, user_id, user=False):
             )
 
 
+@run_async
 def settings_button(update: Update, context: CallbackContext):
     query = update.callback_query
     user = update.effective_user
@@ -554,7 +744,7 @@ def settings_button(update: Update, context: CallbackContext):
                     [
                         [
                             InlineKeyboardButton(
-                                text="Go Back",
+                                text="Back",
                                 callback_data="stngs_back({})".format(chat_id),
                             )
                         ]
@@ -614,6 +804,7 @@ def settings_button(update: Update, context: CallbackContext):
             LOGGER.exception("Exception in settings buttons. %s", str(query.data))
 
 
+@run_async
 def get_settings(update: Update, context: CallbackContext):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
@@ -644,6 +835,25 @@ def get_settings(update: Update, context: CallbackContext):
     else:
         send_settings(chat.id, user.id, True)
 
+
+@run_async
+def donate(update: Update, context: CallbackContext):
+    user = update.effective_message.from_user
+    chat = update.effective_chat  # type: Optional[Chat]
+    bot = context.bot
+    if chat.type == "private":
+        update.effective_message.reply_text(
+            DONATE_STRING, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
+        )
+
+        if OWNER_ID != 1963422158 and DONATION_LINK:
+            update.effective_message.reply_text(
+                "You can also donate to the person currently running me "
+                "[here]({})".format(DONATION_LINK),
+                parse_mode=ParseMode.MARKDOWN,
+            )
+
+    else:
         try:
             bot.send_message(
                 user.id,
@@ -679,6 +889,7 @@ def migrate_chats(update: Update, context: CallbackContext):
     LOGGER.info("Successfully migrated!")
     raise DispatcherHandlerStop
 
+
 def main():
 
     if SUPPORT_CHAT is not None and isinstance(SUPPORT_CHAT, str):
@@ -697,37 +908,35 @@ def main():
         except BadRequest as e:
             LOGGER.warning(e.message)
 
-test_handler = CommandHandler("test", test,)
-start_handler = CommandHandler("start", start,)
+    test_handler = CommandHandler("test", test)
+    start_handler = CommandHandler("start", start)
 
-help_handler = CommandHandler("help", get_help, )
-help_callback_handler = CallbackQueryHandler(
-        help_button, pattern=r"help_.*")
+    help_handler = CommandHandler("help", get_help)
+    help_callback_handler = CallbackQueryHandler(help_button, pattern=r"help_.*")
 
-settings_handler = CommandHandler("settings", get_settings)
-settings_callback_handler = CallbackQueryHandler(
-        settings_button, pattern=r"stngs_")
+    settings_handler = CommandHandler("settings", get_settings)
+    settings_callback_handler = CallbackQueryHandler(settings_button, pattern=r"stngs_")
 
-about_callback_handler = CallbackQueryHandler(
-        mikey_about_callback, pattern=r"emiko_", )
+    about_callback_handler = CallbackQueryHandler(luna_about_callback, pattern=r"luna_")
+    source_callback_handler = CallbackQueryHandler(Source_about_callback, pattern=r"source_")
 
-  
+    donate_handler = CommandHandler("donate", donate)
+    migrate_handler = MessageHandler(Filters.status_update.migrate, migrate_chats)
 
-migrate_handler = MessageHandler(
-        Filters.status_update.migrate, migrate_chats)
+    # dispatcher.add_handler(test_handler)
+    dispatcher.add_handler(start_handler)
+    dispatcher.add_handler(help_handler)
+    dispatcher.add_handler(about_callback_handler)
+    dispatcher.add_handler(source_callback_handler)
+    dispatcher.add_handler(settings_handler)
+    dispatcher.add_handler(help_callback_handler)
+    dispatcher.add_handler(settings_callback_handler)
+    dispatcher.add_handler(migrate_handler)
+    dispatcher.add_handler(donate_handler)
 
-dispatcher.add_handler(test_handler)
-dispatcher.add_handler(start_handler)
-dispatcher.add_handler(help_handler)
-dispatcher.add_handler(about_callback_handler)
-dispatcher.add_handler(settings_handler)
-dispatcher.add_handler(help_callback_handler)
-dispatcher.add_handler(settings_callback_handler)
-dispatcher.add_handler(migrate_handler)
+    dispatcher.add_error_handler(error_callback)
 
-dispatcher.add_error_handler(error_callback)
-
-if WEBHOOK:
+    if WEBHOOK:
         LOGGER.info("Using webhooks.")
         updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=TOKEN)
 
@@ -736,19 +945,20 @@ if WEBHOOK:
         else:
             updater.bot.set_webhook(url=URL + TOKEN)
 
-else:
+    else:
         LOGGER.info("Using long polling.")
         updater.start_polling(timeout=15, read_latency=4, clean=True)
 
-if len(argv) not in (1, 3, 4):
+    if len(argv) not in (1, 3, 4):
         telethn.disconnect()
-else:
+    else:
         telethn.run_until_disconnected()
 
-updater.idle()
+    updater.idle()
 
 
 if __name__ == "__main__":
     LOGGER.info("Successfully loaded modules: " + str(ALL_MODULES))
     telethn.start(bot_token=TOKEN)
+    pbot.start()
     main()
