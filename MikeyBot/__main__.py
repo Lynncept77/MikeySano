@@ -350,6 +350,7 @@ def mikey_about_callback(update, context):
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
                  [
+                  [
                     InlineKeyboardButton(text="Support", callback_data="mikey_support"),
                     InlineKeyboardButton(text="Extras", callback_data="mikey_extras"),
                  ],
