@@ -9,8 +9,6 @@ from telegram.ext import CallbackContext
 from MikeyBot import (
     DEL_CMDS,
     DEV_USERS,
-    SUPPORT_USERS,
-    WHITELIST_USERS,
     dispatcher,
 )
 
