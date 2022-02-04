@@ -713,7 +713,6 @@ about_callback_handler = CallbackQueryHandler(
 
   
 
-donate_handler = CommandHandler("donate", donate)
 migrate_handler = MessageHandler(
         Filters.status_update.migrate, migrate_chats)
 
@@ -726,7 +725,6 @@ dispatcher.add_handler(settings_handler)
 dispatcher.add_handler(help_callback_handler)
 dispatcher.add_handler(settings_callback_handler)
 dispatcher.add_handler(migrate_handler)
-dispatcher.add_handler(donate_handler)
 
 dispatcher.add_error_handler(error_callback)
 
