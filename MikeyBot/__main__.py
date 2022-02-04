@@ -644,7 +644,6 @@ def get_settings(update: Update, context: CallbackContext):
     else:
         send_settings(chat.id, user.id, True)
 
-    else:
         try:
             bot.send_message(
                 user.id,
