@@ -8,7 +8,6 @@ from platform import python_version as memek
 from MikeyBot import (
     ALLOW_EXCL,
     CERT_PATH,
-    DONATION_LINK,
     LOGGER,
     OWNER_ID,
     PORT,
@@ -112,16 +111,8 @@ Click on the button bellow to get description about specifics command."""
 
 
 
-DONATE_STRING = """Heya, glad to hear you want to donate!
- You can support the project via [Paypal](#) or by contacting @akshi_s_ashu1 \
- Supporting isnt always financial! \
- Those who cannot provide monetary support are welcome to help us develop the bot at."""
 
 
-
-DONATE_STRING = """Hehe, senang mendengar Anda ingin menyumbang!
- [klick disini](https://t.me/zeinzo_1) ❤️
-"""
 
 IMPORTED = {}
 MIGRATEABLE = []
