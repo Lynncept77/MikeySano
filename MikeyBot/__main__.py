@@ -713,7 +713,7 @@ def main():
     )
 
     about_callback_handler = CallbackQueryHandler(
-        emiko_about_callback, pattern=r"emiko_", run_async=True
+        mikey_about_callback, pattern=r"mikey_", run_async=True
     )
     migrate_handler = MessageHandler(
        Filters.status_update.migrate, migrate_chats
