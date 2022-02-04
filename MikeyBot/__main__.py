@@ -679,15 +679,13 @@ def migrate_chats(update: Update, context: CallbackContext):
     LOGGER.info("Successfully migrated!")
     raise DispatcherHandlerStop
 
-
 def main():
 
     if SUPPORT_CHAT is not None and isinstance(SUPPORT_CHAT, str):
         try:
             dispatcher.bot.sendMessage(
                 f"@{SUPPORT_CHAT}", 
-                f"""**Mikey Robot Started!**
-
+                f"""**Emiko Robot Started!**
 **Python:** `{memek()}`
 **Telegram Library:** `v{peler}`""",
                 parse_mode=ParseMode.MARKDOWN
@@ -699,34 +697,42 @@ def main():
         except BadRequest as e:
             LOGGER.warning(e.message)
 
-    test_handler = CommandHandler("test", test)
-    start_handler = CommandHandler("start", start)
+    test_handler = CommandHandler("test", test, run_async=True)
+    start_handler = CommandHandler("start", start, run_async=True)
 
-    help_handler = CommandHandler("help", get_help)
+    help_handler = CommandHandler("help", get_help, run_async=True)
     help_callback_handler = CallbackQueryHandler(
-        help_button, pattern=r"help_.*"
+        help_button, pattern=r"help_.*", run_async=True
     )
 
-    settings_handler = CommandHandler("settings", get_settings)
+    settings_handler = CommandHandler("settings", get_settings, run_async=True)
     settings_callback_handler = CallbackQueryHandler(
-        settings_button, pattern=r"stngs_"
+        settings_button, pattern=r"stngs_", run_async=True
     )
 
     about_callback_handler = CallbackQueryHandler(
-        mikey_about_callback, pattern=r"mikey_"
+        emiko_about_callback, pattern=r"emiko_", run_async=True
     )
+
+    source_callback_handler = CallbackQueryHandler(
+        Source_about_callback, pattern=r"source_", run_async=True
+    )
+
+    donate_handler = CommandHandler("donate", donate, run_async=True)
     migrate_handler = MessageHandler(
-       Filters.status_update.migrate, migrate_chats
+        Filters.status_update.migrate, migrate_chats, run_async=True
     )
-   
+
     dispatcher.add_handler(test_handler)
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(help_handler)
     dispatcher.add_handler(about_callback_handler)
+    dispatcher.add_handler(source_callback_handler)
     dispatcher.add_handler(settings_handler)
     dispatcher.add_handler(help_callback_handler)
     dispatcher.add_handler(settings_callback_handler)
     dispatcher.add_handler(migrate_handler)
+    dispatcher.add_handler(donate_handler)
 
     dispatcher.add_error_handler(error_callback)
 
