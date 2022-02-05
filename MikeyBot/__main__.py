@@ -90,7 +90,7 @@ PM_START_TEXT = """
 
 »»»»»—————🎩—————«««««
 
-➛卐  The Help Buttons That Are Below To Know How cool I am [.](https://telegra.ph/file/15c927e8a8860761d6094.jpg) ×× 卍 
+➛卐  The Help Buttons That Are Below To Know How cool I am. ×× 卍 
 """
 
 buttons = [
@@ -222,12 +222,12 @@ def start(update: Update, context: CallbackContext):
             )
     else:
         update.effective_message.reply_photo(
-            LUNA_IMG, caption= "I'm awake already!\n<b>Haven't slept since:</b> <code>{}</code>".format(
+            MIKEY_IMG, caption= "I'm awake already!\n<b>Haven't slept since:</b> <code>{}</code>".format(
                 uptime
             ),
             parse_mode=ParseMode.HTML,
             reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton(text="Sᴜᴘᴘᴏʀᴛ", url="https://t.me/Miss_AkshiV1_Support")]]
+                [[InlineKeyboardButton(text="Sᴜᴘᴘᴏʀᴛ", url="https://t.me/")]]
             ),
         )
         
@@ -354,88 +354,8 @@ def help_button(update, context):
         pass
 
 
-@run_async
-def luna_about_callback(update, context):
-    query = update.callback_query
-    if query.data == "luna_":
-        query.message.edit_text(
-            text="""Hi again! I'am a full-fledged group management bot built to help you manage your group easily.\n
-                    \nI can do lot of stuff, some of them are:
-                    \n• Restrict users who flood your chat using my anti-flood module.
-                    \n• Safeguard your group with the advanced and handy Antispam system.
-                    \n• Greet users with media + text and buttons, with proper formatting.
-                    \n• Save notes and filters with proper formatting and reply markup.\n
-                    \nNote: I need to be promoted with proper admin permissions to fuction properly.\n
-                    \nCheck Setup Guide to learn on setting up the bot and on help to learn more.""",
-            parse_mode=ParseMode.MARKDOWN,
-            disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup(
-                [
-                    [
-                        InlineKeyboardButton(
-                            text="Setup Guide", callback_data="luna_aselole"
-                        ),
-                        InlineKeyboardButton(
-                            text="T & C", callback_data="luna_puqi"
-                        ),
-                    ],
-                    [InlineKeyboardButton(text="ʙᴀᴄᴋ", callback_data="luna_back")],
-                ]
-            ),
-        )
-    elif query.data == "luna_back":
-        query.message.edit_text(
-                PM_START_TEXT,
-                reply_markup=InlineKeyboardMarkup(buttons),
-                parse_mode=ParseMode.MARKDOWN,
-                timeout=60,
-                disable_web_page_preview=False,
-        )
 
-    elif query.data == "luna_basichelp":
-        query.message.edit_text(
-            text=f"**──「 Basic Guide 」──**"
-            f"\n\n1.) first, add me to your group.\n"
-            f"2.) then promote me as admin and give all permissions except anonymous admin.\n"
-            f"3.) after promoting me, type /reload in group to update the admin list.\n"
-            f"4.) add @LunaAssistant to your group or type /join to invite her.\n"
-            f"5.) turn on the video chat first before start to play music.\n"
-            f"\n📌 if userbot doesn't join voice chat make sure voice chat is active, or type /leave then type /join again..",
-            parse_mode=ParseMode.MARKDOWN,
-            disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup(
-                [
-                 [
-                    InlineKeyboardButton(text="📗 Basic CMD", callback_data="luna_admin"),
-                    InlineKeyboardButton(text="📘 Advanced CMD", callback_data="luna_notes"),
-                 ],
-                 [
-                    InlineKeyboardButton(text="📙 Admin CMD", callback_data="luna_support"),
-                 ],
-                 [
-                    InlineKeyboardButton(text="Back", callback_data="luna_back"),
-                 
-                 ]
-                ]
-            ),
-        )
-    elif query.data == "luna_admin":
-        query.message.edit_text(
-            text=f"**──「 Basic Guide 」──**"
-            f"\n\n/play (song name) - play song from youtube"
-            f"\n/ytp (song name) - play song directly from"
-            f"\nB/stream (reply to audio) - play song using audio file."
-            f"\n/playlist - show the list song in queue"
-            f"\n/song (song name) - download song from youtube."
-            f"\n/search (video name) - search video from youtube detailed."
-            f"\n/lyric - (song name) lyrics scrapper",
-            parse_mode=ParseMode.MARKDOWN,
-            disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton(text="Back", callback_data="luna_basichelp")]]
-            ),
-        )
-
+    
     elif query.data == "luna_notes":
         query.message.edit_text(
             text=f"──「 Advanced CMD 」──\n\n"
